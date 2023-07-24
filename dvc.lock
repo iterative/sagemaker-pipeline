@@ -2,6 +2,7 @@ schema: '2.0'
 stages:
   prepare:
     cmd:
+    - rm -f bank-additional.zip
     - wget 
       https://sagemaker-sample-data-us-west-2.s3-us-west-2.amazonaws.com/autopilot/direct_marketing/bank-additional.zip
     - python sm_prepare.py --bucket dave-sandbox --prefix sagemaker/DEMO-xgboost-dm
@@ -40,17 +41,17 @@ stages:
     outs:
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/test
       hash: md5
-      md5: d264827568076007184893a07d68f564.dir
+      md5: 98348e09c465f87b1ba6b073b97938c6.dir
       size: 506467
       nfiles: 2
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/train
       hash: md5
-      md5: 292594de6867365f6498c87aae4b7cfc.dir
+      md5: e3b07acbe103210f2da6158db05987fb.dir
       size: 3545009
       nfiles: 1
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/validation
       hash: md5
-      md5: 7fea063490567a8360eaaf41ed9e2da7.dir
+      md5: 6d01a2644cd9a0c91765bbdd7856dbe2.dir
       size: 1012968
       nfiles: 1
   training:
@@ -58,12 +59,12 @@ stages:
     deps:
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/train
       hash: md5
-      md5: 292594de6867365f6498c87aae4b7cfc.dir
+      md5: e3b07acbe103210f2da6158db05987fb.dir
       size: 3545009
       nfiles: 1
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/validation
       hash: md5
-      md5: 7fea063490567a8360eaaf41ed9e2da7.dir
+      md5: 6d01a2644cd9a0c91765bbdd7856dbe2.dir
       size: 1012968
       nfiles: 1
     - path: sm_training.py
@@ -73,6 +74,6 @@ stages:
     outs:
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/output
       hash: md5
-      md5: 232a3f5df95299cd007659e8fe99c095.dir
-      size: 473763
-      nfiles: 7
+      md5: 2308e7c1722165deafb192affe49bb5f.dir
+      size: 394986
+      nfiles: 6
