@@ -1,0 +1,78 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd:
+    - wget 
+      https://sagemaker-sample-data-us-west-2.s3-us-west-2.amazonaws.com/autopilot/direct_marketing/bank-additional.zip
+    - python sm_prepare.py --bucket dave-sandbox --prefix sagemaker/DEMO-xgboost-dm
+    deps:
+    - path: 
+        https://sagemaker-sample-data-us-west-2.s3-us-west-2.amazonaws.com/autopilot/direct_marketing/bank-additional.zip
+      hash: md5
+      checksum: '"7e1251f64f0853895d094700448216ee"'
+      size: 432828
+    - path: sm_prepare.py
+      hash: md5
+      md5: bf60499ea4a57811cdfdabec4343c3aa
+      size: 653
+    outs:
+    - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/input_data
+      hash: md5
+      md5: 735e1d275e6d294448e6c5c91c9a20c8.dir
+      size: 5146674
+      nfiles: 1
+  preprocessing:
+    cmd: python sm_preprocessing.py --bucket dave-sandbox --prefix sagemaker/DEMO-xgboost-dm
+    deps:
+    - path: preprocessing.py
+      hash: md5
+      md5: dbfe48a64c460d7054c65e9044f10bf1
+      size: 2336
+    - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/input_data
+      hash: md5
+      md5: 735e1d275e6d294448e6c5c91c9a20c8.dir
+      size: 5146674
+      nfiles: 1
+    - path: sm_preprocessing.py
+      hash: md5
+      md5: 8a3fc41d7a127e2326c24fc49678bca2
+      size: 1711
+    outs:
+    - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/test
+      hash: md5
+      md5: d264827568076007184893a07d68f564.dir
+      size: 506467
+      nfiles: 2
+    - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/train
+      hash: md5
+      md5: 292594de6867365f6498c87aae4b7cfc.dir
+      size: 3545009
+      nfiles: 1
+    - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/validation
+      hash: md5
+      md5: 7fea063490567a8360eaaf41ed9e2da7.dir
+      size: 1012968
+      nfiles: 1
+  training:
+    cmd: python sm_training.py --bucket dave-sandbox --prefix sagemaker/DEMO-xgboost-dm
+    deps:
+    - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/train
+      hash: md5
+      md5: 292594de6867365f6498c87aae4b7cfc.dir
+      size: 3545009
+      nfiles: 1
+    - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/validation
+      hash: md5
+      md5: 7fea063490567a8360eaaf41ed9e2da7.dir
+      size: 1012968
+      nfiles: 1
+    - path: sm_training.py
+      hash: md5
+      md5: 7cec051e7ff4de2fd4ced01ca678e9b9
+      size: 1662
+    outs:
+    - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/output
+      hash: md5
+      md5: 232a3f5df95299cd007659e8fe99c095.dir
+      size: 473763
+      nfiles: 7

@@ -1,0 +1,3 @@
+# sagemaker-pipeline
+
+This repo takes the data processing and model training from https://github.com/aws-samples/amazon-sagemaker-immersion-day/blob/master/processing_xgboost.ipynb and converts it into a DVC pipeline. The code is minimally modified from the original notebook to modularize it into individual scripts and parametrize the s3 paths. To run it, modify the bucket and prefix paths in `params.yaml` and then use `dvc repro` or `dvc exp run` to execute the pipeline in SageMaker.

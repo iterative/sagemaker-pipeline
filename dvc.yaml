@@ -1,0 +1,33 @@
+stages:
+  prepare:
+    cmd:
+    - wget https://sagemaker-sample-data-us-west-2.s3-us-west-2.amazonaws.com/autopilot/direct_marketing/bank-additional.zip
+    - python sm_prepare.py --bucket ${bucket} --prefix ${prefix}
+    deps:
+    - sm_prepare.py
+    - https://sagemaker-sample-data-us-west-2.s3-us-west-2.amazonaws.com/autopilot/direct_marketing/bank-additional.zip
+    outs:
+    - s3://${bucket}/${prefix}/input_data:
+        cache: false
+  preprocessing:
+    cmd: python sm_preprocessing.py --bucket ${bucket} --prefix ${prefix}
+    deps:
+    - sm_preprocessing.py
+    - preprocessing.py
+    - s3://${bucket}/${prefix}/input_data
+    outs:
+    - s3://${bucket}/${prefix}/train:
+        cache: false
+    - s3://${bucket}/${prefix}/validation:
+        cache: false
+    - s3://${bucket}/${prefix}/test:
+        cache: false
+  training:
+    cmd: python sm_training.py --bucket ${bucket} --prefix ${prefix}
+    deps:
+    - sm_training.py
+    - s3://${bucket}/${prefix}/train
+    - s3://${bucket}/${prefix}/validation
+    outs:
+    - s3://${bucket}/${prefix}/output:
+        cache: false
