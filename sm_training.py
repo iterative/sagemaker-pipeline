@@ -8,6 +8,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bucket")
     parser.add_argument("--prefix")
+    parser.add_argument("--max_depth", type=int)
+    parser.add_argument("--eta", type=float)
+    parser.add_argument("--gamma", type=int)
+    parser.add_argument("--min_child_weight", type=int)
+    parser.add_argument("--subsample", type=float)
+    parser.add_argument("--silent", type=int)
+    parser.add_argument("--objective")
+    parser.add_argument("--num_round", type=int)
+
     args = parser.parse_args()
     bucket = args.bucket
     prefix = args.prefix
@@ -31,14 +40,14 @@ def main():
                                         instance_type='ml.m4.xlarge',
                                         output_path='s3://{}/{}/output'.format(bucket, prefix),
                                         sagemaker_session=sess)
-    xgb.set_hyperparameters(max_depth=5,
-                            eta=0.2,
-                            gamma=4,
-                            min_child_weight=6,
-                            subsample=0.8,
-                            silent=0,
-                            objective='binary:logistic',
-                            num_round=100)
+    xgb.set_hyperparameters(max_depth=args.max_depth,
+                            eta=args.eta,
+                            gamma=args.gamma,
+                            min_child_weight=args.min_child_weight,
+                            subsample=args.subsample,
+                            silent=args.silent,
+                            objective=args.objective,
+                            num_round=args.num_round)
 
     xgb.fit({'train': s3_input_train, 'validation': s3_input_validation}) 
 

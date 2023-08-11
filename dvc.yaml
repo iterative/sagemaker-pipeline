@@ -24,7 +24,7 @@ stages:
     - s3://${bucket}/${prefix}/test:
         cache: false
   training:
-    cmd: python sm_training.py --bucket ${bucket} --prefix ${prefix}
+    cmd: python sm_training.py --bucket ${bucket} --prefix ${prefix}  ${train}
     deps:
     - sm_training.py
     - s3://${bucket}/${prefix}/train
