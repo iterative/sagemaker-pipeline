@@ -2,9 +2,9 @@ schema: '2.0'
 stages:
   prepare:
     cmd:
-    - rm -f bank-additional.zip
-    - wget 
+    - curl 
       https://sagemaker-sample-data-us-west-2.s3-us-west-2.amazonaws.com/autopilot/direct_marketing/bank-additional.zip
+      -o bank-additional.zip
     - python sm_prepare.py --bucket dave-sandbox --prefix sagemaker/DEMO-xgboost-dm
     deps:
     - path: 
@@ -41,17 +41,17 @@ stages:
     outs:
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/test
       hash: md5
-      md5: 2c231c2500d0475fbbd28afdf10964aa.dir
+      md5: 4395b17f71bb1bd5f6e9d0e22e960e81.dir
       size: 506467
       nfiles: 2
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/train
       hash: md5
-      md5: 682392fa257794c9fd432693002ce2e4.dir
+      md5: e2e0dcf49e644f580342279f550ad574.dir
       size: 3545009
       nfiles: 1
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/validation
       hash: md5
-      md5: 7ddcae9eeea71d4423832ed7f251a286.dir
+      md5: 5c3e7e009a90314d9a9531a5b68c45d5.dir
       size: 1012968
       nfiles: 1
   training:
@@ -61,21 +61,25 @@ stages:
     deps:
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/train
       hash: md5
-      md5: 682392fa257794c9fd432693002ce2e4.dir
+      md5: e2e0dcf49e644f580342279f550ad574.dir
       size: 3545009
       nfiles: 1
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/validation
       hash: md5
-      md5: 7ddcae9eeea71d4423832ed7f251a286.dir
+      md5: 5c3e7e009a90314d9a9531a5b68c45d5.dir
       size: 1012968
       nfiles: 1
     - path: sm_training.py
       hash: md5
-      md5: 73ea3430208898e6ce2879a97c511464
-      size: 2119
+      md5: 3c3804455d5bf355677fbc8630659084
+      size: 3427
+    - path: train.py
+      hash: md5
+      md5: d06e210befac037f4216ea326d9d3e81
+      size: 2211
     outs:
     - path: s3://dave-sandbox/sagemaker/DEMO-xgboost-dm/output
       hash: md5
-      md5: a1ce699466f31bf065ed1382cfd80c5c.dir
-      size: 416993
-      nfiles: 7
+      md5: ad60d9f3bafa5f35403ea433c097ea5d.dir
+      size: 393592
+      nfiles: 6

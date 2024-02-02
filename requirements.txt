@@ -1,3 +1,5 @@
 dvc[s3]
 pandas
 sagemaker
+xgboost
+git+https://github.com/iterative/dvclive.git@no-git
